@@ -6,7 +6,7 @@ class: invert
 
 # **My ultimate smash list**
 
-This list is incomplete; you can help by adding missing items.
+This list is incomplete. You can help by adding missing items.
 
 ---
 
@@ -36,6 +36,13 @@ Silly Goose
 ---
 
 # Total smash
+
+---
+
+![bg 30%](cinnamon.jpg)
+
+<style scoped>section { justify-content: end; }</style>
+Cinnamon
 
 ---
 
