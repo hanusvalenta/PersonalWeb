@@ -60,6 +60,13 @@ Horizon
 
 ---
 
+![bg 30%](miko.jpg)
+
+<style scoped>section { justify-content: end; }</style>
+Yae Miko
+
+---
+
 ![bg 30%](joss.jpeg)
 
 <style scoped>section { justify-content: end; }</style>
