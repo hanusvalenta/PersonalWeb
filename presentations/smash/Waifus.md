@@ -53,10 +53,10 @@ Doomer guy
 
 ---
 
-![bg 50%](horizon.jpg)
+![bg 50%](wattson.jpg)
 
 <style scoped>section { justify-content: end; }</style>
-Horizon
+Wattson
 
 ---
 
