@@ -1,40 +1,33 @@
 import './style.css';
 import * as THREE from 'three';
 
+// Set constants
 const Scene = new THREE.Scene();
-const Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const Renderer = new THREE.WebGLRenderer({canvas: document.querySelector('#bg')});
-const PointLight = new THREE.PointLight(0xffffff);
-const AmbientLight = new THREE.AmbientLight(0xffffff);
-const Crater = new THREE.TextureLoader().load('GaleCrater.png');
+const Camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+const Renderer = new THREE.WebGLRenderer();
 
-Renderer.setPixelRatio(window.devicePixelRatio);
-Renderer.setSize(window.innerWidth, window.innerHeight);
+// set render size
+Renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( Renderer.domElement );
 
-Camera.position.setZ(30);
-Camera.position.setX(-3);
+// predefine Cube
+const BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+const BoxMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+const Cube = new THREE.Mesh( BoxGeometry, BoxMaterial );
 
-PointLight.position.set(5, 5, 5);
+// add cube to scene
+Scene.add( Cube );
 
-Scene.add(PointLight, AmbientLight);
+// move camera a bit
+Camera.position.z = 5;
 
-Scene.background = Crater;
+// animate loop
+function animate() {
+	requestAnimationFrame( animate );
+	Renderer.render( Scene, Camera );
 
-
-
-function moveCamera() {
-  const t = document.body.getBoundingClientRect().top;
-
-  Camera.position.z = t * -0.01;
+  // rotate box a bit
+  Cube.rotation.x += 0.01;
+  Cube.rotation.y += 0.01;
 }
-
-document.body.onscroll = moveCamera;
-moveCamera();
-
-function RenderLoop() {
-  requestAnimationFrame(RenderLoop);
-
-  Renderer.render(Scene, Camera);
-}
-
-RenderLoop();
+animate();
