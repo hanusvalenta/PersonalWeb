@@ -14,14 +14,14 @@ const Moon = new THREE.Mesh(
     normalMap: NormalTexture,
   })
 );
-const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
-const material = new THREE.MeshStandardMaterial({ color: 0xff6347 });
-const torus = new THREE.Mesh(geometry, material);
-const pointLight = new THREE.PointLight(0xffffff);
-const ambientLight = new THREE.AmbientLight(0xffffff);
+const Geometry = new THREE.TorusGeometry(10, 3, 16, 100);
+const Material = new THREE.MeshStandardMaterial({ color: 0xff6347 });
+const Torus = new THREE.Mesh(Geometry, Material);
+const PointLight = new THREE.PointLight(0xffffff);
+const AmbientLight = new THREE.AmbientLight(0xffffff);
 const HanusTexture = new THREE.TextureLoader().load('Hanus.png');
 const Hanus = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.MeshBasicMaterial({ map: HanusTexture }));
-const spaceTexture = new THREE.TextureLoader().load('Space.jpg');
+const SpaceTexture = new THREE.TextureLoader().load('Space.jpg');
 
 Renderer.setPixelRatio(window.devicePixelRatio);
 Renderer.setSize(window.innerWidth, window.innerHeight);
@@ -31,16 +31,16 @@ Camera.position.setX(-3);
 
 Renderer.render(Scene, Camera);
 
-Scene.add(torus);
+Scene.add(Torus);
 
-pointLight.position.set(5, 5, 5);
+PointLight.position.set(5, 5, 5);
 
-Scene.add(pointLight, ambientLight);
+Scene.add(PointLight, AmbientLight);
 
 function addStar() {
-  const geometry = new THREE.SphereGeometry(0.25, 24, 24);
-  const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
-  const star = new THREE.Mesh(geometry, material);
+  const Geometry = new THREE.SphereGeometry(0.25, 24, 24);
+  const Material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const star = new THREE.Mesh(Geometry, Material);
 
   const [x, y, z] = Array(3)
     .fill()
@@ -52,7 +52,7 @@ function addStar() {
 
 Array(200).fill().forEach(addStar);
 
-Scene.background = spaceTexture;
+Scene.background = SpaceTexture;
 
 Scene.add(Hanus);
 Scene.add(Moon);
@@ -84,9 +84,9 @@ moveCamera();
 function animate() {
   requestAnimationFrame(animate);
 
-  torus.rotation.x += 0.01;
-  torus.rotation.y += 0.005;
-  torus.rotation.z += 0.01;
+  Torus.rotation.x += 0.01;
+  Torus.rotation.y += 0.005;
+  Torus.rotation.z += 0.01;
 
   Moon.rotation.x += 0.005;
 
