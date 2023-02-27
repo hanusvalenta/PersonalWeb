@@ -1,6 +1,5 @@
 import './style.css';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const Scene = new THREE.Scene();
 const Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -21,7 +20,7 @@ const PointLight = new THREE.PointLight(0xffffff);
 const AmbientLight = new THREE.AmbientLight(0xffffff);
 const HanusTexture = new THREE.TextureLoader().load('Hanus.png');
 const Hanus = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.MeshBasicMaterial({ map: HanusTexture }));
-const SpaceTexture = new THREE.TextureLoader().load('Space.jpg');
+const Crater = new THREE.TextureLoader().load('GaleCrater.png');
 
 Renderer.setPixelRatio(window.devicePixelRatio);
 Renderer.setSize(window.innerWidth, window.innerHeight);
@@ -52,7 +51,7 @@ function addStar() {
 
 Array(200).fill().forEach(addStar);
 
-Scene.background = SpaceTexture;
+Scene.background = Crater;
 
 Scene.add(Hanus);
 Scene.add(Moon);
