@@ -20,6 +20,8 @@ Scene.add(PointLight, AmbientLight);
 
 Scene.background = Crater;
 
+
+
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
 
