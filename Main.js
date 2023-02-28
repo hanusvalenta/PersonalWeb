@@ -1,4 +1,4 @@
-// import css, three and GLTF file fprmat loader
+// import css, three
 import './style.css';
 import * as THREE from 'three';
 
@@ -14,7 +14,7 @@ document.body.appendChild( Renderer.domElement );
 
 // predefine Cube
 const BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
-const BoxMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+const BoxMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
 const Cube = new THREE.Mesh( BoxGeometry, BoxMaterial );
 
 // set background

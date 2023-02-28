@@ -1,5 +1,17 @@
 @import url("https://use.typekit.net/jmk3xov.css");
 
+@font-face {
+  font-family: JetBrainsMono-Medium;
+  src: url(JetBrainsMono-Medium.woff2);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: JetBrainsMono-Bold;
+  src: url(JetBrainsMono-Bold.woff2);
+  font-weight: bold;
+}
+
 canvas {
   position: fixed;
   top: 0;
@@ -31,7 +43,7 @@ main {
 }
 
 h1, h2, h3, blockquote {
-  font-family: elevon, sans-serif;
+  font-family: JetBrainsMono-Medium;
   font-weight: 700;
   font-style: normal;
 }
