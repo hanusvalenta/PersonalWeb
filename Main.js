@@ -16,6 +16,8 @@ document.body.appendChild( Renderer.domElement );
 const BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
 const BoxMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
 const Cube = new THREE.Mesh( BoxGeometry, BoxMaterial );
+Cube.position.z = -5;
+Cube.position.x = 5;
 
 // set background
 Scene.background = GaleCrater;
@@ -24,7 +26,17 @@ Scene.background = GaleCrater;
 Scene.add(Cube);
 
 // move camera a bit
-Camera.position.z = 5;
+Camera.position.z = 0;
+
+// scroll animation
+function moveCamera() {
+  const t = document.body.getBoundingClientRect().top;
+
+  Camera.position.z = t * 0.01;
+}
+
+document.body.onscroll = moveCamera;
+moveCamera();
 
 // animate loop
 function animate() {
