@@ -19,18 +19,10 @@ document.body.appendChild( Renderer.domElement );
 Scene.background = GaleCrater;
 
 // add objects to scene
-function LoadObjects(Light,Cube,Heart) {
-Scene.add(Light);
-Scene.add(Cube);
-Scene.add(Heart);
+function LoadObjects(Light,Cube,Heart,Dodecahedron,Tetrahedron) {
+Scene.add(Light,Cube,Heart,Dodecahedron,Tetrahedron);
 }
-LoadObjects(Light,Shapes.Cube,Shapes.HeartMesh);
-
-//heart loop
-//function RotateHeart(); {
-
-//}
-//RotateHeart();
+LoadObjects(Light,Shapes.Cube,Shapes.HeartMesh,Shapes.Dodecahedron,Shapes.Tetrahedron);
 
 // scroll animation
 function MoveCamera() {
@@ -48,8 +40,14 @@ function Animate() {
 	requestAnimationFrame( Animate );
 	Renderer.render( Scene, Camera );
 
-  // rotate box
+  // rotate objects
   Shapes.Cube.rotation.y += 0.001;
   Shapes.Cube.rotation.x += 0.001;
+
+  Shapes.Dodecahedron.rotation.x += 0.001;
+  Shapes.Dodecahedron.rotation.x += 0.001;
+
+  Shapes.Tetrahedron.rotation.x += 0.001;
+  Shapes.Tetrahedron.rotation.x += 0.001;
 }
 Animate();
