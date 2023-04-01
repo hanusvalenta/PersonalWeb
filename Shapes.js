@@ -19,7 +19,7 @@ HeartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );
 HeartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );
 
 const HeartGeometry = new THREE.ShapeGeometry( HeartShape );
-const HeartMaterial = new THREE.MeshPhysicalMaterial( { color: 0xE81224 } );
+const HeartMaterial = new THREE.MeshPhysicalMaterial( { color: 0xec0927 } );
 export const HeartMesh = new THREE.Mesh( HeartGeometry, HeartMaterial );
 
 HeartMesh.scale.set(HeartShapeScale,HeartShapeScale,HeartShapeScale);
@@ -32,7 +32,7 @@ HeartMesh.rotation.z = 135;
 
 // cube
 const BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
-const BoxMaterial = new THREE.MeshPhysicalMaterial( { color: 0xffffff } );
+const BoxMaterial = new THREE.MeshPhysicalMaterial( { color: 0x000000 } );
 export const Cube = new THREE.Mesh( BoxGeometry, BoxMaterial );
 
 Cube.position.z = -25;
@@ -40,7 +40,7 @@ Cube.position.x = 6;
 
 // dodecahedron
 const DodecahedronGeometry = new THREE.DodecahedronGeometry(1,0);
-const DodecahedronMaterial = new THREE.MeshPhysicalMaterial( { color: 0xffffff } );
+const DodecahedronMaterial = new THREE.MeshPhysicalMaterial( { color: 0x000000 } );
 export const Dodecahedron = new THREE.Mesh( DodecahedronGeometry, DodecahedronMaterial );
 
 Dodecahedron.position.z = -15;
@@ -49,7 +49,7 @@ Dodecahedron.position.x = -6;
 // tetrahedron
 
 const TetrahedronGeometry = new THREE.TetrahedronGeometry(1,0);
-const TetrahedronMaterial = new THREE.MeshPhysicalMaterial( { color: 0xffffff } );
+const TetrahedronMaterial = new THREE.MeshPhysicalMaterial( { color: 0x000000 } );
 export const Tetrahedron = new THREE.Mesh( TetrahedronGeometry, TetrahedronMaterial );
 
 Tetrahedron.position.z = -35;

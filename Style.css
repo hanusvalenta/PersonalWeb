@@ -1,7 +1,19 @@
 @import url("https://use.typekit.net/jmk3xov.css");
 
 @font-face {
-  font-family: JetBrainsMono-Medium;
+  font-family: Helvetica;
+  src: url(Helvetica.woff2);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: Helvetica-Bold;
+  src: url(Helvetica-Bold.woff2);
+  font-weight: bold;
+}
+
+/*@font-face {
+  font-family: JetBrainsMono;
   src: url(JetBrainsMono-Medium.woff2);
   font-weight: normal;
 }
@@ -10,7 +22,7 @@
   font-family: JetBrainsMono-Bold;
   src: url(JetBrainsMono-Bold.woff2);
   font-weight: bold;
-}
+}*/
 
 canvas {
   position: fixed;
@@ -23,7 +35,7 @@ canvas {
   --dark-bg: rgba(15, 15, 15, 0.95);
   --spacing: 350px;
 
-  font-family: brandon-grotesque, sans-serif;
+  font-family: Helvetica, sans-serif;
   font-weight: 400;
   font-style: normal;
 }
@@ -43,18 +55,19 @@ Main {
 }
 
 h1, h2, h3 {
-  font-family: JetBrainsMono-Medium;
+  font-family: Helvetica;
   font-weight: 700;
   font-style: normal;
 }
 
 Header {
-  font-family: JetBrainsMono-Bold;
+  font-family: Helvetica-Bold;
   background: var(--dark-bg);
   grid-column: 2 / span 5;
   font-size: 2.5rem;
   padding: 2rem;
   margin-bottom: var(--spacing);
+  border-radius: 30px;
 }
 
 TextBlock {
@@ -65,4 +78,5 @@ TextBlock {
   line-height: 1.5;
   margin-bottom: var(--spacing);
   max-width: 50vw;
+  border-radius: 30px;
 }

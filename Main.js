@@ -8,7 +8,7 @@ import * as Shapes from './Shapes.js';
 const Scene = new THREE.Scene();
 const Camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 const Renderer = new THREE.WebGLRenderer();
-const GaleCrater = new THREE.TextureLoader().load('GaleCrater.png');
+const Background = new THREE.TextureLoader().load('Background.jpg'); // or just replace with png
 const Light = new THREE.PointLight(0x404040,5,0,2);
 
 // set render size
@@ -16,7 +16,7 @@ Renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( Renderer.domElement );
 
 // set background
-Scene.background = GaleCrater;
+Scene.background = Background;
 
 // add objects to scene
 function LoadObjects(Light,Cube,Heart,Dodecahedron,Tetrahedron) {
