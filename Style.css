@@ -54,6 +54,10 @@ Main {
   align-items: center;
 }
 
+p2 {
+  font-size: 2vh;
+}
+
 h1, h2, h3 {
   font-family: Helvetica;
   font-weight: 700;
