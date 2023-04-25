@@ -11,14 +11,6 @@ const Renderer = new THREE.WebGLRenderer();
 const Background = new THREE.TextureLoader().load('Background.jpg'); // or just replace with png
 const Light = new THREE.PointLight(0x404040,5,0,2);
 
-/*main = document.getElementsByTagName("main")[0];
-
-if(!navigator.userAgentData.mobile) {
-    document.addEventListener("mousemove", () => {
-        main.style.boxShadow = (event.clientX - window.innerWidth / 2) / -15 + "px " + (event.clientY - window.innerHeight / 2) / -15 + "px 0 #000";
-    });
-}*/
-
 // set render size
 Renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( Renderer.domElement );
