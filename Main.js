@@ -18,6 +18,17 @@ document.body.appendChild( Renderer.domElement );
 // set background
 Scene.background = Background;
 
+// load loader
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+const loader = new GLTFLoader();
+
+loader.load('Teapot.gltf', function (gltf) {
+  scene.add(gltf.scene);
+}, undefined, function (error) {
+  console.error(error);
+});
+
 // add objects to scene
 function LoadObjects(Light,Cube,Heart,Dodecahedron,Tetrahedron) {
 Scene.add(Light,Cube,Heart,Dodecahedron,Tetrahedron);
