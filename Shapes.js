@@ -39,15 +39,6 @@ Cube.position.z = -5;
 Cube.position.y = -10;
 Cube.position.x = 6;
 
-// dodecahedron
-const DodecahedronGeometry = new THREE.DodecahedronGeometry(1,0);
-const DodecahedronMaterial = new THREE.MeshPhysicalMaterial( { color: 0x000000 } );
-export const Dodecahedron = new THREE.Mesh( DodecahedronGeometry, DodecahedronMaterial );
-
-Dodecahedron.position.z = -5;
-Dodecahedron.position.y = -5;
-Dodecahedron.position.x = -6;
-
 // tetrahedron
 
 const TetrahedronGeometry = new THREE.TetrahedronGeometry(1,0);

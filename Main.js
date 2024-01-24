@@ -2,6 +2,7 @@
 import './style.css';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import * as Shapes from './Shapes.js';
 
 // Set constants
@@ -10,7 +11,8 @@ const Camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.inner
 const Renderer = new THREE.WebGLRenderer();
 const Background = new THREE.TextureLoader().load('Background.jpg'); // or just replace with png
 const Light = new THREE.PointLight(0x404040,5,0,2);
-const loader = new GLTFLoader();
+const gltfloader = new GLTFLoader();
+const objloader = new OBJLoader();
 
 // set render size
 Renderer.setSize( window.innerWidth, window.innerHeight );
@@ -20,7 +22,7 @@ document.body.appendChild( Renderer.domElement );
 Scene.background = Background;
 
 // Load Teapot model
-loader.load('Teapot.gltf', function(gltf) {
+gltfloader.load('Teapot.gltf', function(gltf) {
   const Teapot = gltf.scene;
   
   Teapot.position.z = -5;
@@ -34,6 +36,17 @@ loader.load('Teapot.gltf', function(gltf) {
   Teapot.rotation.z = 135;
   
   Scene.add(Teapot);
+});
+
+// Load Suzane model
+gltfloader.load('Suzanne.glb', function(gltf) {
+  const Suzanne = gltf.scene;
+  
+  Suzanne.position.z = -5;
+  Suzanne.position.y = -5;
+  Suzanne.position.x = -6;
+
+  Scene.add(Suzanne);
 });
 
 // add objects to scene
@@ -68,6 +81,6 @@ function Animate() {
   Shapes.Tetrahedron.rotation.y += 0.001;
   Shapes.Tetrahedron.rotation.x += 0.001;
 
-  
+
 }
 Animate();
