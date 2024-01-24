@@ -36,7 +36,8 @@ canvas {
 
 
 :root {
-  --dark-bg: rgba(15, 15, 15, 0.95);
+  --dark-bg: #000000;
+  --white: #ffffff;
   --spacing: 350px;
 
   font-family: Helvetica, sans-serif;
@@ -47,7 +48,7 @@ canvas {
 
 Main {
   width: 100vw;
-  color: white;
+  color: var(--white);
   z-index: 99;
   position: absolute;
   width: 100%;
