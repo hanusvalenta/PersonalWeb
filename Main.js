@@ -1,7 +1,7 @@
 // import css, three
 import './style.css';
 import * as THREE from 'three';
-
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as Shapes from './Shapes.js';
 
 // Set constants
@@ -10,6 +10,7 @@ const Camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.inner
 const Renderer = new THREE.WebGLRenderer();
 const Background = new THREE.TextureLoader().load('Background.jpg'); // or just replace with png
 const Light = new THREE.PointLight(0x404040,5,0,2);
+const loader = new GLTFLoader();
 
 // set render size
 Renderer.setSize( window.innerWidth, window.innerHeight );
@@ -18,15 +19,14 @@ document.body.appendChild( Renderer.domElement );
 // set background
 Scene.background = Background;
 
-// load loader
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-
-const loader = new GLTFLoader();
-
-loader.load('Teapot.gltf', function (gltf) {
-  scene.add(gltf.scene);
-}, undefined, function (error) {
-  console.error(error);
+// Load Teapot model
+loader.load('Teapot.gltf', function(gltf) {
+  const Teapot = gltf.scene;
+  
+  Teapot.position.z = -45;
+  Teapot.position.x = 6;
+  
+  Scene.add(Teapot);
 });
 
 // add objects to scene
