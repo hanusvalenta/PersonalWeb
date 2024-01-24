@@ -35,7 +35,8 @@ const BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
 const BoxMaterial = new THREE.MeshPhysicalMaterial( { color: 0x000000 } );
 export const Cube = new THREE.Mesh( BoxGeometry, BoxMaterial );
 
-Cube.position.z = -25;
+Cube.position.z = -5;
+Cube.position.y = -10;
 Cube.position.x = 6;
 
 // dodecahedron
@@ -43,7 +44,8 @@ const DodecahedronGeometry = new THREE.DodecahedronGeometry(1,0);
 const DodecahedronMaterial = new THREE.MeshPhysicalMaterial( { color: 0x000000 } );
 export const Dodecahedron = new THREE.Mesh( DodecahedronGeometry, DodecahedronMaterial );
 
-Dodecahedron.position.z = -15;
+Dodecahedron.position.z = -5;
+Dodecahedron.position.y = -5;
 Dodecahedron.position.x = -6;
 
 // tetrahedron
@@ -52,5 +54,6 @@ const TetrahedronGeometry = new THREE.TetrahedronGeometry(1,0);
 const TetrahedronMaterial = new THREE.MeshPhysicalMaterial( { color: 0x000000 } );
 export const Tetrahedron = new THREE.Mesh( TetrahedronGeometry, TetrahedronMaterial );
 
-Tetrahedron.position.z = -35;
-Tetrahedron.position.x = -6;
+Tetrahedron.position.y = -35;
+Tetrahedron.position.x = -5;
+Tetrahedron.position.z = -5;

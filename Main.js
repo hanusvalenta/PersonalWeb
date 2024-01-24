@@ -23,8 +23,15 @@ Scene.background = Background;
 loader.load('Teapot.gltf', function(gltf) {
   const Teapot = gltf.scene;
   
-  Teapot.position.z = -45;
-  Teapot.position.x = 6;
+  Teapot.position.z = -5;
+  Teapot.position.x = -6;
+  Teapot.position.y = -15;
+
+  Teapot.scale.set(0.5,0.5,0.5);
+
+  Teapot.rotation.y = 135;
+  Teapot.rotation.x = 35;
+  Teapot.rotation.z = 135;
   
   Scene.add(Teapot);
 });
@@ -39,7 +46,7 @@ LoadObjects(Light,Shapes.Cube,Shapes.HeartMesh,Shapes.Dodecahedron,Shapes.Tetrah
 function MoveCamera() {
   const t = document.body.getBoundingClientRect().top;
 
-  Camera.position.z = t * 0.01;
+  Camera.position.y = t * 0.01;
   Light.position.set(Camera.position.x,Camera.position.y,Camera.position.z);
 }
 
@@ -55,10 +62,12 @@ function Animate() {
   Shapes.Cube.rotation.y += 0.001;
   Shapes.Cube.rotation.x += 0.001;
 
-  Shapes.Dodecahedron.rotation.x += 0.001;
+  Shapes.Dodecahedron.rotation.y += 0.001;
   Shapes.Dodecahedron.rotation.x += 0.001;
 
+  Shapes.Tetrahedron.rotation.y += 0.001;
   Shapes.Tetrahedron.rotation.x += 0.001;
-  Shapes.Tetrahedron.rotation.x += 0.001;
+
+  
 }
 Animate();
