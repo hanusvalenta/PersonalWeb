@@ -18,6 +18,16 @@ const objloader = new OBJLoader();
 Renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( Renderer.domElement );
 
+
+// set full render size
+function windowResize() {
+  Camera.aspect = window.innerWidth / window.innerHeight;
+  Camera.updateProjectionMatrix();
+
+  Renderer.setSize(window.innerWidth, window.innerHeight);
+}
+window.addEventListener('resize', windowResize);
+
 // set background
 Scene.background = Background;
 
