@@ -14,11 +14,9 @@ circles.forEach(function (circle, index) {
 window.addEventListener("mousemove", function(e){
   coords.x = e.clientX;
   coords.y = e.clientY;
-  
 });
 
 function animateCircles() {
-  
   let x = coords.x;
   let y = coords.y;
   
@@ -40,3 +38,19 @@ function animateCircles() {
 }
 
 animateCircles();
+
+const whiteElements = document.querySelectorAll(".white, #white");
+
+whiteElements.forEach(function(whiteElement) {
+  whiteElement.addEventListener("mouseenter", function() {
+    circles.forEach(function (circle, index) {
+      circle.style.backgroundColor = "white";
+    });
+  });
+  
+  whiteElement.addEventListener("mouseleave", function() {
+    circles.forEach(function (circle, index) {
+      circle.style.backgroundColor = colors[index % colors.length];
+    });
+  });
+});
