@@ -1,7 +1,7 @@
+CLIPBOARD:
 https://discordapp.com/users/1088489927739703336
 
 ADD:
-
 add Skills / Expertise
 Featured Projects
 Education
@@ -14,3 +14,14 @@ informace
 hosting
 dokumentace
 prezentace
+
+NOTES:
+dokumentaci v trpnem rodě
+na začátek domunetace úvod (tři řádky) 
+potom co je tam napsáno
+následně popis použitých technologií
+podle iso 690 citovat odkazy
+použité ide
+o čem jsme to psali
+popis a obsah adresářů
+obrázky kódu
