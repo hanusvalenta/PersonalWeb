@@ -4,134 +4,89 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
-// define axies (why doesn't three have predefined variables for this?)
-const XAxis = new THREE.Vector3(1,0,0);
-const YAxis = new THREE.Vector3(0,1,0);
-const ZAxis = new THREE.Vector3(0,0,1);
+// Predefined axes
+const { Vector3 } = THREE;
+const XAxis = new Vector3(1, 0, 0);
+const YAxis = new Vector3(0, 1, 0);
+const ZAxis = new Vector3(0, 0, 1);
 
-// heart
+// Heart
 const HeartShapeScale = 0.05;
-const x = 0, y = 0;
-const HeartShape = new THREE.Shape();
+const heartX = 0, heartY = 0;
+const heartShape = new THREE.Shape();
 
-HeartShape.moveTo( x + 5, y + 5 );
-HeartShape.bezierCurveTo( x + 5, y + 5, x + 4, y, x, y );
-HeartShape.bezierCurveTo( x - 6, y, x - 6, y + 7,x - 6, y + 7 );
-HeartShape.bezierCurveTo( x - 6, y + 11, x - 3, y + 15.4, x + 5, y + 19 );
-HeartShape.bezierCurveTo( x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7 );
-HeartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );
-HeartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );
+heartShape.moveTo(heartX + 5, heartY + 5);
+heartShape.bezierCurveTo(heartX + 5, heartY + 5, heartX + 4, heartY, heartX, heartY);
+heartShape.bezierCurveTo(heartX - 6, heartY, heartX - 6, heartY + 7, heartX - 6, heartY + 7);
+heartShape.bezierCurveTo(heartX - 6, heartY + 11, heartX - 3, heartY + 15.4, heartX + 5, heartY + 19);
+heartShape.bezierCurveTo(heartX + 12, heartY + 15.4, heartX + 16, heartY + 11, heartX + 16, heartY + 7);
+heartShape.bezierCurveTo(heartX + 16, heartY + 7, heartX + 16, heartY, heartX + 10, heartY);
+heartShape.bezierCurveTo(heartX + 7, heartY, heartX + 5, heartY + 5, heartX + 5, heartY + 5);
 
-const HeartGeometry = new THREE.ShapeGeometry( HeartShape );
-const HeartMaterial = new THREE.MeshPhysicalMaterial( { color: 0xec0927 } );
-const HeartMesh = new THREE.Mesh( HeartGeometry, HeartMaterial );
+const heartGeometry = new THREE.ShapeGeometry(heartShape);
+const heartMaterial = new THREE.MeshPhysicalMaterial({ color: 0xec0927 });
+const heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
 
-HeartMesh.scale.set(HeartShapeScale,HeartShapeScale,HeartShapeScale);
+heartMesh.scale.set(HeartShapeScale, HeartShapeScale, HeartShapeScale);
 
-HeartMesh.position.z = -5;
-HeartMesh.position.x = 6;
-HeartMesh.position.y = 1;
+heartMesh.position.set(6, 1, -5);
+heartMesh.rotation.z = 135;
 
-HeartMesh.rotation.z = 135;
+// Constants
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+const light = new THREE.PointLight(0x404040, 5, 0, 2);
+const gltfLoader = new GLTFLoader();
+const objLoader = new OBJLoader();
 
-// cube
-const BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
-const BoxMaterial = new THREE.MeshPhysicalMaterial( { color: 0x000000 } );
-const Cube = new THREE.Mesh( BoxGeometry, BoxMaterial );
+// Set render size
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-Cube.position.z = -5;
-Cube.position.y = -10;
-Cube.position.x = 6;
+// Set background color to white
+scene.background = new THREE.Color(0xffffff);
 
-// tetrahedron
+// Add objects to scene
+function loadObjects() {
+  scene.add(light, heartMesh);
+}
+loadObjects();
 
-const TetrahedronGeometry = new THREE.TetrahedronGeometry(1,0);
-const TetrahedronMaterial = new THREE.MeshPhysicalMaterial( { color: 0x000000 } );
-const Tetrahedron = new THREE.Mesh( TetrahedronGeometry, TetrahedronMaterial );
-
-Tetrahedron.position.y = -35;
-Tetrahedron.position.x = -5;
-Tetrahedron.position.z = -5;
-
-// Set constants
-const Scene = new THREE.Scene();
-const Camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-const Renderer = new THREE.WebGLRenderer();
-const Light = new THREE.PointLight(0x404040, 5, 0, 2);
-const gltfloader = new GLTFLoader();
-const objloader = new OBJLoader();
-
-// set render size
-Renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(Renderer.domElement);
-
-// set full render size
+// Window resize event
 function windowResize() {
-  Camera.aspect = window.innerWidth / window.innerHeight;
-  Camera.updateProjectionMatrix();
-  Renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 window.addEventListener('resize', windowResize);
 
-// set background color to white
-Scene.background = new THREE.Color(0xffffff); // white color
-
-// Load Teapot model
-gltfloader.load('Teapot.gltf', function(gltf) {
-  const Teapot = gltf.scene;
-  
-  Teapot.position.z = -5;
-  Teapot.position.x = -6;
-  Teapot.position.y = -15;
-
-  Teapot.scale.set(0.5, 0.5, 0.5);
-
-  Teapot.rotation.y = 135;
-  Teapot.rotation.x = 35;
-  Teapot.rotation.z = 135;
-  
-  Scene.add(Teapot);
-});
-
-// Load Suzanne model
-gltfloader.load('Suzanne.glb', function(gltf) {
-  const Suzanne = gltf.scene;
-  
-  Suzanne.position.z = -5;
-  Suzanne.position.y = -5;
-  Suzanne.position.x = -6;
-
-  Scene.add(Suzanne);
-});
-
-// add objects to scene
-function LoadObjects(Light) {
-  Scene.add(Light, Cube, HeartMesh, Tetrahedron);
-}
-LoadObjects(Light);
-
-// scroll animation
-function MoveCamera() {
+// Scroll animation
+function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
-
-  Camera.position.y = t * 0.01;
-  Light.position.set(Camera.position.x, Camera.position.y, Camera.position.z);
+  camera.position.y = t * 0.01;
+  light.position.copy(camera.position);
 }
+document.body.onscroll = moveCamera;
+moveCamera();
 
-document.body.onscroll = MoveCamera;
-MoveCamera();
-
-// animate loop
-function Animate() {
-  requestAnimationFrame(Animate);
-  Renderer.render(Scene, Camera);
-
-  // rotate objects
-  Cube.rotation.y += 0.001;
-  Cube.rotation.x += 0.001;
-
-  Tetrahedron.rotation.y += 0.001;
-  Tetrahedron.rotation.x += 0.001;
+// Animation loop
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
 }
+animate();
 
-Animate();
+// Load models
+async function loadModels() {
+  const teapot = await gltfLoader.loadAsync('Teapot.gltf');
+  teapot.scene.position.set(-6, -15, -5);
+  teapot.scene.scale.set(0.5, 0.5, 0.5);
+  teapot.scene.rotation.set(35, 0, 135);
+  scene.add(teapot.scene);
+
+  const suzanne = await gltfLoader.loadAsync('Suzanne.glb');
+  suzanne.scene.position.set(-6, -5, -5);
+  scene.add(suzanne.scene);
+}
+loadModels();
