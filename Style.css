@@ -8,6 +8,22 @@ html,body {
   cursor: none;
 }
 
+:root {
+  --dark-bg: #000000;
+  --white: #ffffff;
+  --spacing: 350px;
+
+  font-family: Helvetica, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#display-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 .circle {
   height: 24px;
   width: 24px;
@@ -38,22 +54,6 @@ Header:hover + .circle {
   font-family: Helvetica-Bold;
   src: url(Helvetica-Bold.woff2);
   font-weight: bold;
-}
-
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
-:root {
-  --dark-bg: #000000;
-  --white: #ffffff;
-  --spacing: 350px;
-
-  font-family: Helvetica, sans-serif;
-  font-weight: 400;
-  font-style: normal;
 }
 
 Main {

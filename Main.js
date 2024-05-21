@@ -2,7 +2,7 @@ import './style.css';
 import * as THREE from 'three';
 import { AsciiEffect } from 'three/examples/jsm/effects/AsciiEffect.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';  // Import the ASCII effect
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 const { Vector3 } = THREE;
 const XAxis = new Vector3(1, 0, 0);
