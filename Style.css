@@ -58,7 +58,7 @@ canvas {
 
 Main {
   width: 100vw;
-  color: var(--white);
+  color: var(--dark-bg);
   z-index: 99;
   position: absolute;
   width: 100%;
@@ -80,12 +80,12 @@ h1, h2, h3 {
 }
 
 a { 
-  color: var(--white);
+  color: var(--dark-bg);
 }
 
 Header {
   font-family: Helvetica-Bold;
-  background: var(--dark-bg);
+  background: var(--white);
   grid-column: 2 / span 5;
   font-size: 2.5rem;
   padding: 2rem;
@@ -96,7 +96,7 @@ Header {
 TextBlock {
   grid-column: 2 / 8;
   padding: 1rem;
-  background: var(--dark-bg);
+  background: var(--white);
   font-size: 1.25rem;
   line-height: 1.5;
   margin-bottom: var(--spacing);
@@ -107,7 +107,7 @@ TextBlock {
 TextBlock2 {
   grid-column: 2 / 8;
   padding: 1rem;
-  background: var(--dark-bg);
+  background: var(--white);
   font-size: 1.25rem;
   line-height: 1.5;
   margin-bottom: var(--spacing);

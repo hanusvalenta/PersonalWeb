@@ -42,8 +42,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 const effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
 effect.setSize(window.innerWidth, window.innerHeight);
-effect.domElement.style.color = 'black';
-effect.domElement.style.backgroundColor = 'white';
+effect.domElement.style.color = 'white';
+effect.domElement.style.backgroundColor = 'black';
 
 document.body.appendChild(effect.domElement);
 document.body.removeChild(renderer.domElement);
