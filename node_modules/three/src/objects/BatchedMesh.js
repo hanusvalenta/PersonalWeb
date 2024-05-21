@@ -8,8 +8,6 @@ import { RGBAFormat } from '../constants.js';
 import { Box3 } from '../math/Box3.js';
 import { Sphere } from '../math/Sphere.js';
 import { Frustum } from '../math/Frustum.js';
-import { WebGLCoordinateSystem } from '../constants.js';
-import { WebGPUCoordinateSystem } from '../constants.js';
 import { Vector3 } from '../math/Vector3.js';
 
 function sortOpaque( a, b ) {
@@ -154,6 +152,7 @@ class BatchedMesh extends Mesh {
 		this._multiDrawCounts = new Int32Array( maxGeometryCount );
 		this._multiDrawStarts = new Int32Array( maxGeometryCount );
 		this._multiDrawCount = 0;
+		this._multiDrawInstances = null;
 		this._visibilityChanged = true;
 
 		// Local matrix per geometry by using data texture
@@ -197,8 +196,7 @@ class BatchedMesh extends Mesh {
 				const { array, itemSize, normalized } = srcAttribute;
 
 				const dstArray = new array.constructor( maxVertexCount * itemSize );
-				const dstAttribute = new srcAttribute.constructor( dstArray, itemSize, normalized );
-				dstAttribute.setUsage( srcAttribute.usage );
+				const dstAttribute = new BufferAttribute( dstArray, itemSize, normalized );
 
 				geometry.setAttribute( attributeName, dstAttribute );
 
@@ -225,7 +223,7 @@ class BatchedMesh extends Mesh {
 
 	}
 
-	// Make sure the geometry is compatible with the existing combined geometry atributes
+	// Make sure the geometry is compatible with the existing combined geometry attributes
 	_validateGeometry( geometry ) {
 
 		// check that the geometry doesn't have a version of our reserved id attribute
@@ -516,6 +514,7 @@ class BatchedMesh extends Mesh {
 			}
 
 			dstAttribute.needsUpdate = true;
+			dstAttribute.addUpdateRange( vertexStart * itemSize, vertexCount * itemSize );
 
 		}
 
@@ -539,6 +538,7 @@ class BatchedMesh extends Mesh {
 			}
 
 			dstIndex.needsUpdate = true;
+			dstIndex.addUpdateRange( indexStart, reservedRange.indexCount );
 
 		}
 
@@ -594,13 +594,35 @@ class BatchedMesh extends Mesh {
 
 	}
 
+	getInstanceCountAt( id ) {
+
+		if ( this._multiDrawInstances === null ) return null;
+
+		return this._multiDrawInstances[ id ];
+
+	}
+
+	setInstanceCountAt( id, instanceCount ) {
+
+		if ( this._multiDrawInstances === null ) {
+
+			this._multiDrawInstances = new Int32Array( this._maxGeometryCount ).fill( 1 );
+
+		}
+
+		this._multiDrawInstances[ id ] = instanceCount;
+
+		return id;
+
+	}
+
 	// get bounding box and compute it if it doesn't exist
 	getBoundingBoxAt( id, target ) {
 
 		const active = this._active;
 		if ( active[ id ] === false ) {
 
-			return this;
+			return null;
 
 		}
 
@@ -643,7 +665,7 @@ class BatchedMesh extends Mesh {
 		const active = this._active;
 		if ( active[ id ] === false ) {
 
-			return this;
+			return null;
 
 		}
 
@@ -894,6 +916,7 @@ class BatchedMesh extends Mesh {
 		const index = geometry.getIndex();
 		const bytesPerElement = index === null ? 1 : index.array.BYTES_PER_ELEMENT;
 
+		const active = this._active;
 		const visibility = this._visibility;
 		const multiDrawStarts = this._multiDrawStarts;
 		const multiDrawCounts = this._multiDrawCounts;
@@ -908,7 +931,7 @@ class BatchedMesh extends Mesh {
 				.multiply( this.matrixWorld );
 			_frustum.setFromProjectionMatrix(
 				_projScreenMatrix,
-				renderer.isWebGPURenderer ? WebGPUCoordinateSystem : WebGLCoordinateSystem
+				renderer.coordinateSystem
 			);
 
 		}
@@ -922,7 +945,7 @@ class BatchedMesh extends Mesh {
 
 			for ( let i = 0, l = visibility.length; i < l; i ++ ) {
 
-				if ( visibility[ i ] ) {
+				if ( visibility[ i ] && active[ i ] ) {
 
 					// get the bounds in world space
 					this.getMatrixAt( i, _matrix );
@@ -976,7 +999,7 @@ class BatchedMesh extends Mesh {
 
 			for ( let i = 0, l = visibility.length; i < l; i ++ ) {
 
-				if ( visibility[ i ] ) {
+				if ( visibility[ i ] && active[ i ] ) {
 
 					// determine whether the batched geometry is within the frustum
 					let culled = false;

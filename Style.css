@@ -1,6 +1,9 @@
 @import url("https://use.typekit.net/jmk3xov.css");
 
-html {
+html,body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
   scroll-behavior: smooth;
   cursor: none;
 }
@@ -42,7 +45,6 @@ canvas {
   top: 0;
   left: 0;
 }
-
 
 :root {
   --dark-bg: #000000;

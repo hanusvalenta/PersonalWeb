@@ -5,7 +5,7 @@ import { NodeUpdateType } from '../core/constants.js';
 import { nodeObject } from '../shadernode/ShaderNode.js';
 import { uniform } from '../core/UniformNode.js';
 import { viewZToOrthographicDepth, perspectiveDepthToViewZ } from './ViewportDepthNode.js';
-import { RenderTarget, Vector2, HalfFloatType, DepthTexture, FloatType, NoToneMapping } from 'three';
+import { RenderTarget, Vector2, HalfFloatType, DepthTexture, NoToneMapping/*, FloatType*/ } from 'three';
 
 class PassTextureNode extends TextureNode {
 
@@ -51,7 +51,7 @@ class PassNode extends TempNode {
 
 		const depthTexture = new DepthTexture();
 		depthTexture.isRenderTargetTexture = true;
-		depthTexture.type = FloatType;
+		//depthTexture.type = FloatType;
 		depthTexture.name = 'PostProcessingDepth';
 
 		const renderTarget = new RenderTarget( this._width * this._pixelRatio, this._height * this._pixelRatio, { type: HalfFloatType } );
@@ -66,6 +66,7 @@ class PassNode extends TempNode {
 		this._depthTextureNode = nodeObject( new PassTextureNode( this, depthTexture ) );
 
 		this._depthNode = null;
+		this._viewZNode = null;
 		this._cameraNear = uniform( 0 );
 		this._cameraFar = uniform( 0 );
 
@@ -91,6 +92,21 @@ class PassNode extends TempNode {
 
 	}
 
+	getViewZNode() {
+
+		if ( this._viewZNode === null ) {
+
+			const cameraNear = this._cameraNear;
+			const cameraFar = this._cameraFar;
+
+			this._viewZNode = perspectiveDepthToViewZ( this._depthTextureNode, cameraNear, cameraFar );
+
+		}
+
+		return this._viewZNode;
+
+	}
+
 	getDepthNode() {
 
 		if ( this._depthNode === null ) {
@@ -98,7 +114,7 @@ class PassNode extends TempNode {
 			const cameraNear = this._cameraNear;
 			const cameraFar = this._cameraFar;
 
-			this._depthNode = viewZToOrthographicDepth( perspectiveDepthToViewZ( this._depthTextureNode, cameraNear, cameraFar ), cameraNear, cameraFar );
+			this._depthNode = viewZToOrthographicDepth( this.getViewZNode(), cameraNear, cameraFar );
 
 		}
 
@@ -177,6 +193,7 @@ PassNode.DEPTH = 'depth';
 export default PassNode;
 
 export const pass = ( scene, camera ) => nodeObject( new PassNode( PassNode.COLOR, scene, camera ) );
+export const texturePass = ( pass, texture ) => nodeObject( new PassTextureNode( pass, texture ) );
 export const depthPass = ( scene, camera ) => nodeObject( new PassNode( PassNode.DEPTH, scene, camera ) );
 
 addNodeClass( 'PassNode', PassNode );

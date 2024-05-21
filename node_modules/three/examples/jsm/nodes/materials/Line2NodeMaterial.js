@@ -43,9 +43,15 @@ class Line2NodeMaterial extends NodeMaterial {
 		this.dashSizeNode = null;
 		this.gapSizeNode = null;
 
+		this.setValues( params );
+
+	}
+
+	setup( builder ) {
+
 		this.setupShaders();
 
-		this.setValues( params );
+		super.setup( builder );
 
 	}
 
@@ -133,50 +139,38 @@ class Line2NodeMaterial extends NodeMaterial {
 			if ( useWorldUnits ) {
 
 				// get the offset direction as perpendicular to the view vector
+
 				const worldDir = end.xyz.sub( start.xyz ).normalize();
+				const tmpFwd = mix( start.xyz, end.xyz, 0.5 ).normalize();
+				const worldUp = worldDir.cross( tmpFwd ).normalize();
+				const worldFwd = worldDir.cross( worldUp );
 
-				const offset = positionGeometry.y.lessThan( 0.5 ).cond(
-					start.xyz.cross( worldDir ).normalize(),
-					end.xyz.cross( worldDir ).normalize()
+				const worldPos = varyingProperty( 'vec4', 'worldPos' );
 
-				);
+				worldPos.assign( positionGeometry.y.lessThan( 0.5 ).cond( start, end) );
 
-				// sign flip
-				offset.assign( positionGeometry.x.lessThan( 0.0 ).cond( offset.negate(), offset ) );
-
-				const forwardOffset = worldDir.dot( vec3( 0.0, 0.0, 1.0 ) );
+				// height offset
+				const hw = materialLineWidth.mul( 0.5 );
+				worldPos.addAssign( vec4( positionGeometry.x.lessThan( 0.0 ).cond( worldUp.mul( hw ), worldUp.mul( hw ).negate() ), 0 ) );
 
 				// don't extend the line if we're rendering dashes because we
 				// won't be rendering the endcaps
 				if ( ! useDash ) {
 
-					// extend the line bounds to encompass endcaps
-					start.assign( start.sub( vec4( worldDir.mul( materialLineWidth ).mul( 0.5 ), 0 ) ) );
-					end.assign( end.add( vec4( worldDir.mul( materialLineWidth ).mul( 0.5 ), 0 ) ) );
+					// cap extension
+					worldPos.addAssign( vec4( positionGeometry.y.lessThan( 0.5 ).cond( worldDir.mul( hw ).negate(), worldDir.mul( hw ) ), 0 ) );
 
-					// shift the position of the quad so it hugs the forward edge of the line
-					offset.assign( offset.sub( vec3( dir.mul( forwardOffset ), 0 ) ) );
-					offset.z.assign( offset.z.add( 0.5 ) );
+					// add width to the box
+					worldPos.addAssign( vec4( worldFwd.mul( hw ), 0 ) );
+
+					// endcaps
+					If( positionGeometry.y.greaterThan( 1.0 ).or( positionGeometry.y.lessThan( 0.0 ) ), () => {
+
+						worldPos.subAssign( vec4( worldFwd.mul( 2.0 ).mul( hw ), 0 ) );
+
+					} );
 
 				}
-
-				// endcaps
-
-				If( positionGeometry.y.greaterThan( 1.0 ).or( positionGeometry.y.lessThan( 0.0 ) ), () => {
-
-					offset.assign( offset.add( vec3( dir.mul( 2.0 ).mul( forwardOffset ), 0 ) ) );
-
-				} );
-
-				// adjust for linewidth
-				offset.assign( offset.mul( materialLineWidth ).mul( 0.5 ) );
-
-				// set the world position
-
-				const worldPos = varyingProperty( 'vec4', 'worldPos' );
-
-				worldPos.assign( positionGeometry.y.lessThan( 0.5 ).cond( start, end ) );
-				worldPos.assign( worldPos.add( vec4( offset, 0 ) ) );
 
 				// project the worldpos
 				clip.assign( cameraProjectionMatrix.mul( worldPos ) );
@@ -383,8 +377,6 @@ class Line2NodeMaterial extends NodeMaterial {
 
 		} )();
 
-		this.needsUpdate = true;
-
 	}
 
 
@@ -399,7 +391,7 @@ class Line2NodeMaterial extends NodeMaterial {
 		if ( this.useWorldUnits !== value ) {
 
 			this.useWorldUnits = value;
-			this.setupShaders();
+			this.needsUpdate = true;
 
 		}
 
@@ -417,7 +409,7 @@ class Line2NodeMaterial extends NodeMaterial {
 		if ( this.useDash !== value ) {
 
 			this.useDash = value;
-			this.setupShaders();
+			this.needsUpdate = true;
 
 		}
 
@@ -435,7 +427,7 @@ class Line2NodeMaterial extends NodeMaterial {
 		if ( this.useAlphaToCoverage !== value ) {
 
 			this.useAlphaToCoverage = value;
-			this.setupShaders();
+			this.needsUpdate = true;
 
 		}
 

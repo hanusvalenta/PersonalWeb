@@ -7,7 +7,7 @@ import NodeKeywords from './NodeKeywords.js';
 import NodeCache from './NodeCache.js';
 import ParameterNode from './ParameterNode.js';
 import FunctionNode from '../code/FunctionNode.js';
-import { createNodeMaterialFromType } from '../materials/NodeMaterial.js';
+import { createNodeMaterialFromType, default as NodeMaterial } from '../materials/NodeMaterial.js';
 import { NodeUpdateType, defaultBuildStages, shaderStages } from './constants.js';
 
 import {
@@ -15,13 +15,15 @@ import {
 	ColorNodeUniform, Matrix3NodeUniform, Matrix4NodeUniform
 } from '../../renderers/common/nodes/NodeUniform.js';
 
-import { REVISION, RenderTarget, NoColorSpace, LinearEncoding, sRGBEncoding, SRGBColorSpace, Color, Vector2, Vector3, Vector4, Float16BufferAttribute } from 'three';
+import { REVISION, RenderTarget, Color, Vector2, Vector3, Vector4, IntType, UnsignedIntType, Float16BufferAttribute } from 'three';
 
 import { stack } from './StackNode.js';
 import { getCurrentStack, setCurrentStack } from '../shadernode/ShaderNode.js';
 
 import CubeRenderTarget from '../../renderers/common/CubeRenderTarget.js';
 import ChainMap from '../../renderers/common/ChainMap.js';
+
+import PMREMGenerator from '../../renderers/common/extras/PMREMGenerator.js';
 
 const uniformsGroupCache = new ChainMap();
 
@@ -70,7 +72,8 @@ class NodeBuilder {
 		this.lightsNode = null;
 		this.environmentNode = null;
 		this.fogNode = null;
-		this.toneMappingNode = null;
+
+		this.clippingContext = null;
 
 		this.vertexShader = null;
 		this.fragmentShader = null;
@@ -111,15 +114,23 @@ class NodeBuilder {
 
 	}
 
-	getRenderTarget( width, height, options ) {
+	createRenderTarget( width, height, options ) {
 
 		return new RenderTarget( width, height, options );
 
 	}
 
-	getCubeRenderTarget( size, options ) {
+	createCubeRenderTarget( size, options ) {
 
 		return new CubeRenderTarget( size, options );
+
+	}
+
+	createPMREMGenerator() {
+
+		// TODO: Move Materials.js to outside of the Nodes.js in order to remove this function and improve tree-shaking support
+
+		return new PMREMGenerator( this.renderer );
 
 	}
 
@@ -462,7 +473,7 @@ class NodeBuilder {
 
 	isReference( type ) {
 
-		return type === 'void' || type === 'property' || type === 'sampler' || type === 'texture' || type === 'cubeTexture';
+		return type === 'void' || type === 'property' || type === 'sampler' || type === 'texture' || type === 'cubeTexture' || type === 'storageTexture';
 
 	}
 
@@ -472,33 +483,18 @@ class NodeBuilder {
 
 	}
 
-	/** @deprecated, r152 */
-	getTextureEncodingFromMap( map ) {
+	getComponentTypeFromTexture( texture ) {
 
-		console.warn( 'THREE.NodeBuilder: Method .getTextureEncodingFromMap replaced by .getTextureColorSpaceFromMap in r152+.' );
-		return this.getTextureColorSpaceFromMap( map ) === SRGBColorSpace ? sRGBEncoding : LinearEncoding;
+		const type = texture.type;
 
-	}
+		if ( texture.isDataTexture ) {
 
-	getTextureColorSpaceFromMap( map ) {
-
-		let colorSpace;
-
-		if ( map && map.isTexture ) {
-
-			colorSpace = map.colorSpace;
-
-		} else if ( map && map.isWebGLRenderTarget ) {
-
-			colorSpace = map.texture.colorSpace;
-
-		} else {
-
-			colorSpace = NoColorSpace;
+			if ( type === IntType ) return 'int';
+			if ( type === UnsignedIntType ) return 'uint';
 
 		}
 
-		return colorSpace;
+		return 'float';
 
 	}
 
@@ -523,7 +519,7 @@ class NodeBuilder {
 	getVectorType( type ) {
 
 		if ( type === 'color' ) return 'vec3';
-		if ( type === 'texture' ) return 'vec4';
+		if ( type === 'texture' || type === 'cubeTexture' || type === 'storageTexture' ) return 'vec4';
 
 		return type;
 
@@ -575,6 +571,7 @@ class NodeBuilder {
 
 		if ( vecNum !== null ) return Number( vecNum[ 1 ] );
 		if ( vecType === 'float' || vecType === 'bool' || vecType === 'int' || vecType === 'uint' ) return 1;
+		if ( /mat2/.test( type ) === true ) return 4;
 		if ( /mat3/.test( type ) === true ) return 9;
 		if ( /mat4/.test( type ) === true ) return 16;
 
@@ -1091,6 +1088,19 @@ class NodeBuilder {
 
 	build() {
 
+		const { object, material } = this;
+
+
+		if ( material !== null ) {
+
+			NodeMaterial.fromMaterial( material ).build( this );
+
+		} else {
+
+			this.addFlow( 'compute', object );
+
+		}
+
 		// setup() -> stage 1: create possible new nodes and returns an output reference node
 		// analyze()   -> stage 2: analyze nodes to possible optimization and validation
 		// generate()  -> stage 3: generate shader
@@ -1155,21 +1165,11 @@ class NodeBuilder {
 
 	}
 
-	createNodeMaterial( type ) {
+	createNodeMaterial( type = 'NodeMaterial' ) {
+
+		// TODO: Move Materials.js to outside of the Nodes.js in order to remove this function and improve tree-shaking support
 
 		return createNodeMaterialFromType( type );
-
-	}
-
-	getPrimitiveType( type ) {
-
-		let primitiveType;
-
-		if ( type[ 0 ] === 'i' ) primitiveType = 'int';
-		else if ( type[ 0 ] === 'u' ) primitiveType = 'uint';
-		else primitiveType = 'float';
-
-		return primitiveType;
 
 	}
 
@@ -1232,7 +1232,7 @@ class NodeBuilder {
 			// convert a number value to vector type, e.g:
 			// vec3( 1u ) -> vec3( float( 1u ) )
 
-			snippet = `${ this.getType( this.getPrimitiveType( toType ) ) }( ${ snippet } )`;
+			snippet = `${ this.getType( this.getComponentType( toType ) ) }( ${ snippet } )`;
 
 		}
 

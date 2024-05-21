@@ -1,16 +1,14 @@
-// import css, three
 import './style.css';
 import * as THREE from 'three';
+import { AsciiEffect } from 'three/examples/jsm/effects/AsciiEffect.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';  // Import the ASCII effect
 
-// Predefined axes
 const { Vector3 } = THREE;
 const XAxis = new Vector3(1, 0, 0);
 const YAxis = new Vector3(0, 1, 0);
 const ZAxis = new Vector3(0, 0, 1);
 
-// Heart
 const HeartShapeScale = 0.05;
 const heartX = 0, heartY = 0;
 const heartShape = new THREE.Shape();
@@ -32,61 +30,63 @@ heartMesh.scale.set(HeartShapeScale, HeartShapeScale, HeartShapeScale);
 heartMesh.position.set(6, 1, -5);
 heartMesh.rotation.z = 135;
 
-// Constants
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-const light = new THREE.PointLight(0x404040, 5, 0, 2);
 const gltfLoader = new GLTFLoader();
 const objLoader = new OBJLoader();
 
-// Set render size
+camera.position.z = 5;
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("display-canvas") });
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
 
-// Set background color to white
-scene.background = new THREE.Color(0xffffff);
+const effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
+effect.setSize(window.innerWidth, window.innerHeight);
+effect.domElement.style.color = 'black';
+effect.domElement.style.backgroundColor = 'white';
 
-// Add objects to scene
-function loadObjects() {
-  scene.add(light, heartMesh);
-}
-loadObjects();
+document.body.appendChild(effect.domElement);
+document.body.removeChild(renderer.domElement);
 
-// Window resize event
-function windowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
-window.addEventListener('resize', windowResize);
+const geometry = new THREE.BoxGeometry();
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(geometry, material);
 
-// Scroll animation
-function moveCamera() {
-  const t = document.body.getBoundingClientRect().top;
-  camera.position.y = t * 0.01;
-  light.position.copy(camera.position);
-}
-document.body.onscroll = moveCamera;
-moveCamera();
+const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+dirLight.position.set(5, 5, 5);
 
-// Animation loop
-function animate() {
-  requestAnimationFrame(animate);
-  renderer.render(scene, camera);
-}
-animate();
+scene.add(cube);
+scene.add(dirLight);
+scene.add(heartMesh);
 
-// Load models
 async function loadModels() {
   const teapot = await gltfLoader.loadAsync('Teapot.gltf');
-  teapot.scene.position.set(-6, -15, -5);
-  teapot.scene.scale.set(0.5, 0.5, 0.5);
+  teapot.scene.position.set(10, -15, -5);
+  teapot.scene.scale.set(1, 1, 1);
   teapot.scene.rotation.set(35, 0, 135);
   scene.add(teapot.scene);
 
   const suzanne = await gltfLoader.loadAsync('Suzanne.glb');
-  suzanne.scene.position.set(-6, -5, -5);
+  suzanne.scene.position.set(-11, -5, -5);
+  suzanne.scene.scale.set(2, 2, 2);
   scene.add(suzanne.scene);
 }
 loadModels();
+
+function moveCamera() {
+  const t = document.body.getBoundingClientRect().top;
+  camera.position.y = t * 0.01;
+  dirLight.position.copy(camera.position);
+}
+document.body.onscroll = moveCamera;
+moveCamera();
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+
+    effect.render(scene, camera);
+}
+animate();

@@ -95,7 +95,17 @@ class LightsNode extends Node {
 
 			if ( backdrop !== null ) {
 
-				totalDiffuse = vec3( backdropAlpha !== null ? backdropAlpha.mix( totalDiffuse, backdrop ) : backdrop );
+				if ( backdropAlpha !== null ) {
+
+					totalDiffuse = vec3( backdropAlpha.mix( totalDiffuse, backdrop ) );
+
+				} else {
+
+					totalDiffuse = vec3( backdrop );
+
+				}
+
+				context.material.transparent = true;
 
 			}
 
@@ -169,7 +179,7 @@ class LightsNode extends Node {
 export default LightsNode;
 
 export const lights = ( lights ) => nodeObject( new LightsNode().fromLights( lights ) );
-export const lightNodes = nodeProxy( LightsNode );
+export const lightsNode = nodeProxy( LightsNode );
 
 export function addLightNode( lightClass, lightNodeClass ) {
 

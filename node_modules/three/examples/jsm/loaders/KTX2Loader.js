@@ -31,13 +31,13 @@ import {
 	RGB_ETC1_Format,
 	RGB_ETC2_Format,
 	RGB_PVRTC_4BPPV1_Format,
-	RGB_S3TC_DXT1_Format,
 	RGBA_ASTC_4x4_Format,
 	RGBA_ASTC_6x6_Format,
 	RGBA_BPTC_Format,
 	RGBA_ETC2_EAC_Format,
 	RGBA_PVRTC_4BPPV1_Format,
 	RGBA_S3TC_DXT5_Format,
+	RGBA_S3TC_DXT1_Format,
 	RGBAFormat,
 	RGFormat,
 	SRGBColorSpace,
@@ -120,17 +120,32 @@ class KTX2Loader extends Loader {
 
 	}
 
+	async detectSupportAsync( renderer ) {
+
+		this.workerConfig = {
+			astcSupported: await renderer.hasFeatureAsync( 'texture-compression-astc' ),
+			etc1Supported: await renderer.hasFeatureAsync( 'texture-compression-etc1' ),
+			etc2Supported: await renderer.hasFeatureAsync( 'texture-compression-etc2' ),
+			dxtSupported: await renderer.hasFeatureAsync( 'texture-compression-bc' ),
+			bptcSupported: await renderer.hasFeatureAsync( 'texture-compression-bptc' ),
+			pvrtcSupported: await renderer.hasFeatureAsync( 'texture-compression-pvrtc' )
+		};
+
+		return this;
+
+	}
+
 	detectSupport( renderer ) {
 
 		if ( renderer.isWebGPURenderer === true ) {
 
 			this.workerConfig = {
 				astcSupported: renderer.hasFeature( 'texture-compression-astc' ),
-				etc1Supported: false,
+				etc1Supported: renderer.hasFeature( 'texture-compression-etc1' ),
 				etc2Supported: renderer.hasFeature( 'texture-compression-etc2' ),
 				dxtSupported: renderer.hasFeature( 'texture-compression-bc' ),
-				bptcSupported: false,
-				pvrtcSupported: false
+				bptcSupported: renderer.hasFeature( 'texture-compression-bptc' ),
+				pvrtcSupported: renderer.hasFeature( 'texture-compression-pvrtc' )
 			};
 
 		} else {
@@ -144,13 +159,6 @@ class KTX2Loader extends Loader {
 				pvrtcSupported: renderer.extensions.has( 'WEBGL_compressed_texture_pvrtc' )
 					|| renderer.extensions.has( 'WEBKIT_WEBGL_compressed_texture_pvrtc' )
 			};
-
-			if ( renderer.capabilities.isWebGL2 ) {
-
-				// https://github.com/mrdoob/three.js/pull/22928
-				this.workerConfig.etc1Supported = false;
-
-			}
 
 		}
 
@@ -376,7 +384,7 @@ KTX2Loader.EngineFormat = {
 	RGB_ETC1_Format: RGB_ETC1_Format,
 	RGB_ETC2_Format: RGB_ETC2_Format,
 	RGB_PVRTC_4BPPV1_Format: RGB_PVRTC_4BPPV1_Format,
-	RGB_S3TC_DXT1_Format: RGB_S3TC_DXT1_Format,
+	RGBA_S3TC_DXT1_Format: RGBA_S3TC_DXT1_Format,
 };
 
 
@@ -592,7 +600,7 @@ KTX2Loader.BasisWorker = function () {
 			if: 'dxtSupported',
 			basisFormat: [ BasisFormat.ETC1S, BasisFormat.UASTC_4x4 ],
 			transcoderFormat: [ TranscoderFormat.BC1, TranscoderFormat.BC3 ],
-			engineFormat: [ EngineFormat.RGB_S3TC_DXT1_Format, EngineFormat.RGBA_S3TC_DXT5_Format ],
+			engineFormat: [ EngineFormat.RGBA_S3TC_DXT1_Format, EngineFormat.RGBA_S3TC_DXT5_Format ],
 			priorityETC1S: 4,
 			priorityUASTC: 5,
 			needsPowerOfTwo: false,
@@ -865,8 +873,8 @@ async function createRawTexture( container ) {
 	if ( UNCOMPRESSED_FORMATS.has( FORMAT_MAP[ vkFormat ] ) ) {
 
 		texture = container.pixelDepth === 0
-		? new DataTexture( mipmaps[ 0 ].data, container.pixelWidth, container.pixelHeight )
-		: new Data3DTexture( mipmaps[ 0 ].data, container.pixelWidth, container.pixelHeight, container.pixelDepth );
+			? new DataTexture( mipmaps[ 0 ].data, container.pixelWidth, container.pixelHeight )
+			: new Data3DTexture( mipmaps[ 0 ].data, container.pixelWidth, container.pixelHeight, container.pixelDepth );
 
 	} else {
 
