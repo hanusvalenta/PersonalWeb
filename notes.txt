@@ -6,7 +6,6 @@ add Skills / Expertise
 Featured Projects
 Education
 Interests / Hobbies
-
 responzivita
 informace
 hosting
@@ -14,6 +13,10 @@ dokumentace
 prezentace
 
 NOTES:
+zkontrolovat file linkování a names pokud to nefunguje (všechno kromě index.html by mělo být VelkéPísmeno.koncovka)
+zpouštět přes npx vite
+
+DOCUMENTATIONNOTES:
 dokumentaci v trpnem rodě
 na začátek domunetace úvod (tři řádky) 
 potom co je tam napsáno
