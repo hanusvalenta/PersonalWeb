@@ -1,12 +1,30 @@
 CLIPBOARD:
 https://discordapp.com/users/1088489927739703336
 
+mailto:hanus.valenta@gmail.com
+
+    function onWindowResize() {
+        // Dispose of current renderer and remove canvas
+        renderer.dispose();
+        document.body.removeChild(renderer.domElement);
+
+        // Reinitialize scene, camera, and renderer
+        init();
+    }
+
+    // Initialize the scene for the first time
+    init();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', onWindowResize);
+
 ADD:
 add Skills / Expertise
 Featured Projects
 Education
 Interests / Hobbies
-responzivita
+
+responzivita!
 informace
 hosting
 dokumentace
@@ -27,3 +45,6 @@ o čem jsme to psali
 popis a obsah adresářů
 obrázky kódu
 velké a malé číslování
+
+WEBSITES:
+https://carbon.now.sh/
