@@ -7,8 +7,6 @@ Featured Projects
 Education
 Interests / Hobbies
 
-ascii efekt
-
 responzivita
 informace
 hosting
@@ -25,3 +23,4 @@ použité ide
 o čem jsme to psali
 popis a obsah adresářů
 obrázky kódu
+velké a malé číslování
