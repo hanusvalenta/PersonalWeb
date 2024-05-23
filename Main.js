@@ -81,7 +81,7 @@ loadModels();
 
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
-  camera.position.y = t * 0.01;
+  camera.position.y = t * 0.003;
   dirLight.position.copy(camera.position);
 }
 document.body.onscroll = moveCamera;
@@ -97,9 +97,9 @@ function createCube(x, y, z) {
 }
 
 const cubes = [
-  createCube(-3, 0, -5), // Left cube
-  createCube(3, 0, -5), // Right cube
-  createCube(0, 0, -10), // Center cube
+  createCube(-3, 0, -5),
+  createCube(3, 0, -5),
+  createCube(0, 0, -10),
 ];
 
 function rotateObjects() {
