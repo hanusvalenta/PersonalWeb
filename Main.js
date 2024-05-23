@@ -93,10 +93,24 @@ function createCube(x, y, z) {
   const cube = new THREE.Mesh(geometry, material);
   cube.position.set(x, y, z);
   scene.add(cube);
+  return cube;
 }
 
-createCube(-3, 0, -5); // Left cube
-createCube(3, 0, -5); // Right cube
+const cubes = [
+  createCube(-3, 0, -5), // Left cube
+  createCube(3, 0, -5), // Right cube
+  createCube(0, 0, -10), // Center cube
+];
+
+function rotateObjects() {
+  cubes.forEach(cube => {
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+  });
+
+  heartMesh.rotation.x += 0.01;
+  heartMesh.rotation.y += 0.01;
+}
 
 function onWindowResize() {
   updateCanvasSize();
@@ -107,8 +121,7 @@ window.addEventListener('resize', onWindowResize, false);
 function animate() {
   requestAnimationFrame(animate);
 
-  heartMesh.rotation.x += 0.01;
-  heartMesh.rotation.y += 0.01;
+  rotateObjects();
 
   effect.render(scene, camera);
 }
