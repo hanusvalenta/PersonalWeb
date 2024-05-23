@@ -1,9 +1,14 @@
 @import url("https://use.typekit.net/jmk3xov.css");
 
-html,body {
-  margin: 0;
-  scroll-behavior: smooth;
+html {
   cursor: none;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  min-height: 100vh;
 }
 
 :root {
