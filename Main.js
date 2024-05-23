@@ -2,7 +2,6 @@ import './Style.css';
 import * as THREE from 'three';
 import { AsciiEffect } from 'three/examples/jsm/effects/AsciiEffect.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 const { Vector3 } = THREE;
 const XAxis = new Vector3(1, 0, 0);
@@ -33,7 +32,6 @@ heartMesh.rotation.z = 135;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const gltfLoader = new GLTFLoader();
-const objLoader = new OBJLoader();
 
 camera.position.z = 5;
 
@@ -61,14 +59,9 @@ effect.domElement.style.backgroundColor = 'black';
 document.body.appendChild(effect.domElement);
 document.body.removeChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-
 const dirLight = new THREE.DirectionalLight(0xffffff, 1);
 dirLight.position.set(5, 5, 5);
 
-scene.add(cube);
 scene.add(dirLight);
 scene.add(heartMesh);
 
@@ -94,6 +87,17 @@ function moveCamera() {
 document.body.onscroll = moveCamera;
 moveCamera();
 
+function createCube(x, y, z) {
+  const geometry = new THREE.BoxGeometry();
+  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  const cube = new THREE.Mesh(geometry, material);
+  cube.position.set(x, y, z);
+  scene.add(cube);
+}
+
+createCube(-3, 0, -5); // Left cube
+createCube(3, 0, -5); // Right cube
+
 function onWindowResize() {
   updateCanvasSize();
 }
@@ -103,8 +107,8 @@ window.addEventListener('resize', onWindowResize, false);
 function animate() {
   requestAnimationFrame(animate);
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  heartMesh.rotation.x += 0.01;
+  heartMesh.rotation.y += 0.01;
 
   effect.render(scene, camera);
 }
