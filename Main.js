@@ -81,12 +81,23 @@ function moveCamera() {
 document.body.onscroll = moveCamera;
 moveCamera();
 
+function onWindowResize() {
+  const aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  effect.setSize(window.innerWidth, window.innerHeight);
+}
+
+window.addEventListener('resize', onWindowResize, false);
+
 function animate() {
-    requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
 
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+  cube.rotation.x += 0.01;
+  cube.rotation.y += 0.01;
 
-    effect.render(scene, camera);
+  effect.render(scene, camera);
 }
 animate();
