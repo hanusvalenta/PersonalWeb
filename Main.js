@@ -47,6 +47,10 @@ function updateCanvasSize() {
   effect.setSize(bodyWidth, bodyHeight);
   canvas.width = bodyWidth;
   canvas.height = bodyHeight;
+
+  const aspect = bodyWidth / bodyHeight;
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
 }
 
 const effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
@@ -91,9 +95,6 @@ document.body.onscroll = moveCamera;
 moveCamera();
 
 function onWindowResize() {
-  const aspect = document.body.scrollWidth / document.body.scrollHeight;
-  camera.aspect = aspect;
-  camera.updateProjectionMatrix();
   updateCanvasSize();
 }
 
