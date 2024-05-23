@@ -37,11 +37,20 @@ const objLoader = new OBJLoader();
 
 camera.position.z = 5;
 
-const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("display-canvas") });
-renderer.setSize(window.innerWidth, window.innerHeight);
+const canvas = document.getElementById("display-canvas");
+const renderer = new THREE.WebGLRenderer({ canvas });
+
+function updateCanvasSize() {
+  const bodyWidth = document.body.scrollWidth;
+  const bodyHeight = document.body.scrollHeight;
+  renderer.setSize(bodyWidth, bodyHeight);
+  effect.setSize(bodyWidth, bodyHeight);
+  canvas.width = bodyWidth;
+  canvas.height = bodyHeight;
+}
 
 const effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
-effect.setSize(window.innerWidth, window.innerHeight);
+updateCanvasSize();
 effect.domElement.style.color = 'white';
 effect.domElement.style.backgroundColor = 'black';
 
@@ -82,12 +91,10 @@ document.body.onscroll = moveCamera;
 moveCamera();
 
 function onWindowResize() {
-  const aspect = window.innerWidth / window.innerHeight;
+  const aspect = document.body.scrollWidth / document.body.scrollHeight;
   camera.aspect = aspect;
   camera.updateProjectionMatrix();
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  effect.setSize(window.innerWidth, window.innerHeight);
+  updateCanvasSize();
 }
 
 window.addEventListener('resize', onWindowResize, false);
