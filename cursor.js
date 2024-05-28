@@ -44,7 +44,7 @@ const whiteElements = document.querySelectorAll(".white, #white");
 whiteElements.forEach(function(whiteElement) {
   whiteElement.addEventListener("mouseenter", function() {
     circles.forEach(function (circle, index) {
-      circle.style.backgroundColor = "black";
+      circle.style.backgroundColor = "white";
     });
   });
   

@@ -88,7 +88,7 @@ Header:hover + .circle {
 
 Main {
   width: 100vw;
-  color: var(--dark-bg);
+  color: var(--white);
   z-index: 99;
   position: absolute;
   width: 100%;
@@ -111,38 +111,30 @@ h1, h2, h3 {
 }
 
 a { 
-  color: var(--dark-bg);
+  color: var(--white);
 }
 
 Header {
   font-family: ThatThatNewPixel;
-  background: var(--white);
+  background: var(--dark-bg);
   grid-column: 2 / span 5;
   font-size: 2.5rem;
   padding: 2rem;
   margin-bottom: var(--spacing);
   border-radius: 30px;
+  border: solid 1px var(--white);
 }
 
 TextBlock {
   font-family: ThatThatNewPixel;
   grid-column: 2 / 8;
   padding: 1rem;
-  background: var(--white);
+  border-radius: 1px;
+  background: var(--dark-bg);
   font-size: 1.25rem;
   line-height: 1.5;
   margin-bottom: var(--spacing);
   max-width: 50vw;
   border-radius: 30px;
-}
-
-TextBlock2 {
-  grid-column: 2 / 8;
-  padding: 1rem;
-  background: var(--white);
-  font-size: 1.25rem;
-  line-height: 1.5;
-  margin-bottom: var(--spacing);
-  max-width: 50vw;
-  border-radius: 30px;
+  border: solid 1px var(--white);
 }
