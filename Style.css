@@ -47,7 +47,7 @@ body {
 }
 
 .nameText {
-  font-family: Helvetica;
+  font-family: ThatThatNewPixel;
   font-weight: bolder;
   font-size: 4vw;
   font-style: normal;
@@ -74,15 +74,15 @@ Header:hover + .circle {
 }
 
 @font-face {
-  font-family: Helvetica;
-  src: url(Assets/Fonts/Helvetica.woff2);
+  font-family: ThatThatNewPixel;
+  src: url(Assets/Fonts/ThatThatNewPixel-Round.woff);
   font-weight: normal;
 }
 
 @font-face {
-  font-family: Helvetica-Bold;
-  src: url(Assets/Fonts/Helvetica-Bold.woff2);
-  font-weight: bold;
+  font-family: ThatThatNewPixel-Italic;
+  src: url(Assets/Fonts/ThatThatNewPixel-ItalicRound.woff);
+  font-weight: italic;
 }
 
 Main {
@@ -100,12 +100,13 @@ Main {
 
 p2 {
   font-size: 2vh;
+  font-family: ThatThatNewPixel;
 }
 
 h1, h2, h3 {
-  font-family: Helvetica;
   font-weight: 700;
   font-style: normal;
+  font-family: ThatThatNewPixel;
 }
 
 a { 
@@ -113,7 +114,7 @@ a {
 }
 
 Header {
-  font-family: Helvetica-Bold;
+  font-family: ThatThatNewPixel;
   background: var(--white);
   grid-column: 2 / span 5;
   font-size: 2.5rem;
@@ -123,6 +124,7 @@ Header {
 }
 
 TextBlock {
+  font-family: ThatThatNewPixel;
   grid-column: 2 / 8;
   padding: 1rem;
   background: var(--white);
