@@ -97,9 +97,9 @@ function createCube(x, y, z) {
 }
 
 const cubes = [
-  createCube(-3, 0, -5),
-  createCube(3, 0, -5),
-  createCube(0, 0, -10),
+  createCube(-3, 6, -8),
+  createCube(3, 0 , -8),
+  createCube(-3, -5, -8),
 ];
 
 function rotateObjects() {
