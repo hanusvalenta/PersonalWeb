@@ -46,6 +46,29 @@ body {
   backdrop-filter: invert(0);
 }
 
+.nameText {
+  font-family: Helvetica;
+  font-weight: bolder;
+  font-size: 4vw;
+  font-style: normal;
+}
+
+#cursor {
+  display: inline-block;
+  background-color: black;
+  color: black;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+      opacity: 1;
+  }
+  50% {
+      opacity: 0;
+  }
+}
+
 Header:hover + .circle {
   backdrop-filter: invert(1);
 }
