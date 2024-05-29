@@ -1,8 +1,7 @@
-import 'Style.css';
+import './Style.css';
 import * as THREE from 'three';
 import { AsciiEffect } from 'three/examples/jsm/effects/AsciiEffect.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 const { Vector3 } = THREE;
 const XAxis = new Vector3(1, 0, 0);
@@ -33,29 +32,36 @@ heartMesh.rotation.z = 135;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const gltfLoader = new GLTFLoader();
-const objLoader = new OBJLoader();
 
 camera.position.z = 5;
 
-const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("display-canvas") });
-renderer.setSize(window.innerWidth, window.innerHeight);
+const canvas = document.getElementById("display-canvas");
+const renderer = new THREE.WebGLRenderer({ canvas });
+
+function updateCanvasSize() {
+  const bodyWidth = document.body.scrollWidth;
+  const bodyHeight = document.body.scrollHeight;
+  renderer.setSize(bodyWidth, bodyHeight);
+  effect.setSize(bodyWidth, bodyHeight);
+  canvas.width = bodyWidth;
+  canvas.height = bodyHeight;
+
+  const aspect = bodyWidth / bodyHeight;
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
+}
 
 const effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
-effect.setSize(window.innerWidth, window.innerHeight);
+updateCanvasSize();
 effect.domElement.style.color = 'white';
 effect.domElement.style.backgroundColor = 'black';
 
 document.body.appendChild(effect.domElement);
 document.body.removeChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-
 const dirLight = new THREE.DirectionalLight(0xffffff, 1);
 dirLight.position.set(5, 5, 5);
 
-scene.add(cube);
 scene.add(dirLight);
 scene.add(heartMesh);
 
@@ -75,18 +81,48 @@ loadModels();
 
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
-  camera.position.y = t * 0.01;
+  camera.position.y = t * 0.003;
   dirLight.position.copy(camera.position);
 }
 document.body.onscroll = moveCamera;
 moveCamera();
 
-function animate() {
-    requestAnimationFrame(animate);
+function createCube(x, y, z) {
+  const geometry = new THREE.BoxGeometry();
+  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  const cube = new THREE.Mesh(geometry, material);
+  cube.position.set(x, y, z);
+  scene.add(cube);
+  return cube;
+}
 
+const cubes = [
+  createCube(-3, 6, -8),
+  createCube(3, 0 , -8),
+  createCube(-3, -5, -8),
+];
+
+function rotateObjects() {
+  cubes.forEach(cube => {
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
+  });
 
-    effect.render(scene, camera);
+  heartMesh.rotation.x += 0.01;
+  heartMesh.rotation.y += 0.01;
+}
+
+function onWindowResize() {
+  updateCanvasSize();
+}
+
+window.addEventListener('resize', onWindowResize, false);
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  rotateObjects();
+
+  effect.render(scene, camera);
 }
 animate();
