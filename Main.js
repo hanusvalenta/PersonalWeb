@@ -28,6 +28,26 @@ heartMesh.scale.set(HeartShapeScale, HeartShapeScale, HeartShapeScale);
 heartMesh.position.set(6, 1, -5);
 heartMesh.rotation.z = 135;
 
+// Create Christian Cross
+const crossMaterial = new THREE.MeshPhysicalMaterial({ color: 0xFFD700 });
+const crossGeometry1 = new THREE.BoxGeometry(0.2, 1, 0.2);
+const crossGeometry2 = new THREE.BoxGeometry(1, 0.2, 0.2);
+const crossMesh1 = new THREE.Mesh(crossGeometry1, crossMaterial);
+const crossMesh2 = new THREE.Mesh(crossGeometry2, crossMaterial);
+
+crossMesh1.add(crossMesh2); // Attach the horizontal bar to the vertical bar
+crossMesh2.position.y = 0.4; // Position the horizontal bar
+
+crossMesh1.scale.set(1, 1, 1);
+crossMesh1.position.set(2, 0, -5);
+
+// Create Donut Shape
+const donutGeometry = new THREE.TorusGeometry(0.3, 0.1, 30, 30);
+const donutMaterial = new THREE.MeshPhysicalMaterial({ color: 0xFFA500 });
+const donutMesh = new THREE.Mesh(donutGeometry, donutMaterial);
+
+donutMesh.position.set(-6, -1, -5);
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const gltfLoader = new GLTFLoader();
@@ -63,6 +83,8 @@ dirLight.position.set(5, 5, 5);
 
 scene.add(dirLight);
 scene.add(heartMesh);
+scene.add(crossMesh1);
+scene.add(donutMesh);
 
 async function loadModels() {
   const teapot = await gltfLoader.loadAsync('Teapot.gltf');
@@ -121,6 +143,10 @@ function rotateObjects() {
 
   heartMesh.rotation.x += 0.01;
   heartMesh.rotation.y += 0.01;
+  crossMesh1.rotation.x += 0.01;
+  crossMesh1.rotation.y += 0.01;
+  donutMesh.rotation.x += 0.01;
+  donutMesh.rotation.y += 0.01;
 }
 
 function onWindowResize() {
