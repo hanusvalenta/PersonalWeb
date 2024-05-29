@@ -56,9 +56,9 @@ body {
 
 #cursor {
   display: inline-block;
-  background-color: black;
-  color: black;
-  animation: blink 0.7s infinite;
+  background-color: white;
+  color: white;
+  animation: blink 1s infinite;
 }
 
 @keyframes blink {

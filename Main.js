@@ -97,8 +97,8 @@ function createCube(x, y, z) {
 }
 
 const cubes = [
-  createCube(-3, 6, -8),
-  createCube(3, 0 , -8),
+  createCube(-3, 8, -8),
+  createCube(3, 1, -8),
   createCube(-3, -5, -8),
 ];
 
