@@ -25,7 +25,6 @@ const heartMaterial = new THREE.MeshPhysicalMaterial({ color: 0xec0927 });
 const heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
 
 heartMesh.scale.set(HeartShapeScale, HeartShapeScale, HeartShapeScale);
-
 heartMesh.position.set(6, 1, -5);
 heartMesh.rotation.z = 135;
 
@@ -87,25 +86,37 @@ function moveCamera() {
 document.body.onscroll = moveCamera;
 moveCamera();
 
-function createCube(x, y, z) {
-  const geometry = new THREE.BoxGeometry();
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-  const cube = new THREE.Mesh(geometry, material);
-  cube.position.set(x, y, z);
-  scene.add(cube);
-  return cube;
+function createRandomShape() {
+  const geometryTypes = [
+    new THREE.BoxGeometry(),
+    new THREE.SphereGeometry(0.5, 32, 32),
+    new THREE.ConeGeometry(0.5, 1, 32),
+    new THREE.CylinderGeometry(0.5, 0.5, 1, 32)
+  ];
+
+  const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+  const geometry = geometryTypes[Math.floor(Math.random() * geometryTypes.length)];
+  const shape = new THREE.Mesh(geometry, material);
+  
+  const x = Math.random() * 20 - 10;
+  const y = Math.random() * 20 - 10;
+  const z = -8 - Math.random() * 10; // Ensure z is always less than or equal to -8
+
+  shape.position.set(x, y, z);
+  scene.add(shape);
+  return shape;
 }
 
-const cubes = [
-  createCube(-3, 8, -8),
-  createCube(3, 1, -8),
-  createCube(-3, -5, -8),
-];
+// Create a lot of random shapes
+const shapes = [];
+for (let i = 0; i < 50; i++) { // Adjust this number for the desired amount of shapes
+  shapes.push(createRandomShape());
+}
 
 function rotateObjects() {
-  cubes.forEach(cube => {
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+  shapes.forEach(shape => {
+    shape.rotation.x += 0.01;
+    shape.rotation.y += 0.01;
   });
 
   heartMesh.rotation.x += 0.01;
