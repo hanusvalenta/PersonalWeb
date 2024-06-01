@@ -3,94 +3,94 @@ import * as THREE from 'three';
 import { AsciiEffect } from 'three/examples/jsm/effects/AsciiEffect.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-const { Vector3 } = THREE;
-const XAxis = new Vector3(1, 0, 0);
-const YAxis = new Vector3(0, 1, 0);
-const ZAxis = new Vector3(0, 0, 1);
-
-const HeartShapeScale = 0.05;
-const heartX = 0, heartY = 0;
-const heartShape = new THREE.Shape();
-
-heartShape.moveTo(heartX + 5, heartY + 5);
-heartShape.bezierCurveTo(heartX + 5, heartY + 5, heartX + 4, heartY, heartX, heartY);
-heartShape.bezierCurveTo(heartX - 6, heartY, heartX - 6, heartY + 7, heartX - 6, heartY + 7);
-heartShape.bezierCurveTo(heartX - 6, heartY + 11, heartX - 3, heartY + 15.4, heartX + 5, heartY + 19);
-heartShape.bezierCurveTo(heartX + 12, heartY + 15.4, heartX + 16, heartY + 11, heartX + 16, heartY + 7);
-heartShape.bezierCurveTo(heartX + 16, heartY + 7, heartX + 16, heartY, heartX + 10, heartY);
-heartShape.bezierCurveTo(heartX + 7, heartY, heartX + 5, heartY + 5, heartX + 5, heartY + 5);
-
-const heartGeometry = new THREE.ShapeGeometry(heartShape);
-const heartMaterial = new THREE.MeshPhysicalMaterial({ color: 0xec0927 });
-const heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
-
-heartMesh.scale.set(HeartShapeScale, HeartShapeScale, HeartShapeScale);
-heartMesh.position.set(6, 1, -5);
-heartMesh.rotation.z = 135;
-
-// Create Christian Cross
-const crossMaterial = new THREE.MeshPhysicalMaterial({ color: 0xFFD700 });
-const crossGeometry1 = new THREE.BoxGeometry(0.2, 1, 0.2);
-const crossGeometry2 = new THREE.BoxGeometry(1, 0.2, 0.2);
-const crossMesh1 = new THREE.Mesh(crossGeometry1, crossMaterial);
-const crossMesh2 = new THREE.Mesh(crossGeometry2, crossMaterial);
-
-crossMesh1.add(crossMesh2); // Attach the horizontal bar to the vertical bar
-crossMesh2.position.y = 0.4; // Position the horizontal bar
-
-crossMesh1.scale.set(1, 1, 1);
-crossMesh1.position.set(2, 0, -5);
-
-// Create Donut Shape
-const donutGeometry = new THREE.TorusGeometry(0.3, 0.1, 30, 30);
-const donutMaterial = new THREE.MeshPhysicalMaterial({ color: 0xFFA500 });
-const donutMesh = new THREE.Mesh(donutGeometry, donutMaterial);
-
-donutMesh.position.set(-6, -1, -5);
-
+// Basic setup
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const gltfLoader = new GLTFLoader();
-
 camera.position.z = 5;
 
 const canvas = document.getElementById("display-canvas");
 const renderer = new THREE.WebGLRenderer({ canvas });
+const effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
 
 function updateCanvasSize() {
-  const bodyWidth = document.body.scrollWidth;
-  const bodyHeight = document.body.scrollHeight;
-  renderer.setSize(bodyWidth, bodyHeight);
-  effect.setSize(bodyWidth, bodyHeight);
-  canvas.width = bodyWidth;
-  canvas.height = bodyHeight;
-
-  const aspect = bodyWidth / bodyHeight;
-  camera.aspect = aspect;
+  const width = document.body.scrollWidth;
+  const height = document.body.scrollHeight;
+  renderer.setSize(width, height);
+  effect.setSize(width, height);
+  camera.aspect = width / height;
   camera.updateProjectionMatrix();
 }
 
-const effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true });
 updateCanvasSize();
 effect.domElement.style.color = 'white';
 effect.domElement.style.backgroundColor = 'black';
-
 document.body.appendChild(effect.domElement);
 document.body.removeChild(renderer.domElement);
 
 const dirLight = new THREE.DirectionalLight(0xffffff, 1);
 dirLight.position.set(5, 5, 5);
-
 scene.add(dirLight);
+
+// Create Heart Shape
+const heartShape = new THREE.Shape()
+  .moveTo(5, 5)
+  .bezierCurveTo(5, 5, 4, 0, 0, 0)
+  .bezierCurveTo(-6, 0, -6, 7, -6, 7)
+  .bezierCurveTo(-6, 11, -3, 15.4, 5, 19)
+  .bezierCurveTo(12, 15.4, 16, 11, 16, 7)
+  .bezierCurveTo(16, 7, 16, 0, 10, 0)
+  .bezierCurveTo(7, 0, 5, 5, 5, 5);
+
+const heartGeometry = new THREE.ShapeGeometry(heartShape);
+const heartMaterial = new THREE.MeshPhysicalMaterial({ color: 0xec0927 });
+const heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
+heartMesh.scale.set(0.05, 0.05, 0.05);
+heartMesh.position.set(6, 1, -5);
+heartMesh.rotation.z = Math.PI / 4;
 scene.add(heartMesh);
-scene.add(crossMesh1);
+
+// Create Cross
+const crossMaterial = new THREE.MeshPhysicalMaterial({ color: 0xFFD700 });
+const verticalBar = new THREE.BoxGeometry(0.2, 1, 0.2);
+const horizontalBar = new THREE.BoxGeometry(0.6, 0.2, 0.2);
+
+const verticalMesh = new THREE.Mesh(verticalBar, crossMaterial);
+const horizontalMesh = new THREE.Mesh(horizontalBar, crossMaterial);
+horizontalMesh.position.y = 0.3;
+verticalMesh.add(horizontalMesh);
+verticalMesh.position.set(2, 0, -5);
+scene.add(verticalMesh);
+
+// Create Donut Shape
+const donutGeometry = new THREE.TorusGeometry(0.3, 0.1, 30, 30);
+const donutMaterial = new THREE.MeshPhysicalMaterial({ color: 0xFFA500 });
+const donutMesh = new THREE.Mesh(donutGeometry, donutMaterial);
+donutMesh.position.set(-6, -1, -5);
 scene.add(donutMesh);
 
+// Create Stars
+function createStar() {
+  const geometry = new THREE.SphereGeometry(0.1, 24, 24);
+  const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const star = new THREE.Mesh(geometry, material);
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 200 - 100;
+  const z = -Math.random() * 500 - 50;
+  star.position.set(x, y, z);
+  scene.add(star);
+}
+
+for (let i = 0; i < 500; i++) {
+  createStar();
+}
+
+// Load models
+const gltfLoader = new GLTFLoader();
 async function loadModels() {
   const teapot = await gltfLoader.loadAsync('Teapot.gltf');
   teapot.scene.position.set(10, -15, -5);
   teapot.scene.scale.set(1, 1, 1);
-  teapot.scene.rotation.set(35, 0, 135);
+  teapot.scene.rotation.set(35, 0, Math.PI / 4);
   scene.add(teapot.scene);
 
   const suzanne = await gltfLoader.loadAsync('Suzanne.glb');
@@ -106,60 +106,21 @@ function moveCamera() {
   dirLight.position.copy(camera.position);
 }
 document.body.onscroll = moveCamera;
-moveCamera();
-
-function createRandomShape() {
-  const geometryTypes = [
-    new THREE.BoxGeometry(),
-    new THREE.SphereGeometry(0.5, 32, 32),
-    new THREE.ConeGeometry(0.5, 1, 32),
-    new THREE.CylinderGeometry(0.5, 0.5, 1, 32)
-  ];
-
-  const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
-  const geometry = geometryTypes[Math.floor(Math.random() * geometryTypes.length)];
-  const shape = new THREE.Mesh(geometry, material);
-  
-  const x = Math.random() * 20 - 10;
-  const y = Math.random() * 20 - 10;
-  const z = -8 - Math.random() * 10; // Ensure z is always less than or equal to -8
-
-  shape.position.set(x, y, z);
-  scene.add(shape);
-  return shape;
-}
-
-// Create a lot of random shapes
-const shapes = [];
-for (let i = 0; i < 50; i++) { // Adjust this number for the desired amount of shapes
-  shapes.push(createRandomShape());
-}
 
 function rotateObjects() {
-  shapes.forEach(shape => {
-    shape.rotation.x += 0.01;
-    shape.rotation.y += 0.01;
-  });
-
   heartMesh.rotation.x += 0.01;
   heartMesh.rotation.y += 0.01;
-  crossMesh1.rotation.x += 0.01;
-  crossMesh1.rotation.y += 0.01;
+  verticalMesh.rotation.x += 0.01;
+  verticalMesh.rotation.y += 0.01;
   donutMesh.rotation.x += 0.01;
   donutMesh.rotation.y += 0.01;
 }
 
-function onWindowResize() {
-  updateCanvasSize();
-}
-
-window.addEventListener('resize', onWindowResize, false);
-
 function animate() {
   requestAnimationFrame(animate);
-
   rotateObjects();
-
   effect.render(scene, camera);
 }
+
+window.addEventListener('resize', updateCanvasSize);
 animate();
