@@ -58,7 +58,7 @@ const verticalMesh = new THREE.Mesh(verticalBar, crossMaterial);
 const horizontalMesh = new THREE.Mesh(horizontalBar, crossMaterial);
 horizontalMesh.position.y = 0.3;
 verticalMesh.add(horizontalMesh);
-verticalMesh.position.set(2, 0, -5);
+verticalMesh.position.set(2.25, 0, -5);
 scene.add(verticalMesh);
 
 // Create Donut Shape
