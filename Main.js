@@ -43,7 +43,7 @@ const heartGeometry = new THREE.ShapeGeometry(heartShape);
 const heartMaterial = new THREE.MeshPhysicalMaterial({ color: 0xec0927 });
 const heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
 heartMesh.scale.set(0.05, 0.05, 0.05);
-heartMesh.position.set(-2.25, 6, -5);
+heartMesh.position.set(-2.25, 8, -10);
 heartMesh.rotation.z = Math.PI / 4;
 scene.add(heartMesh);
 
@@ -55,7 +55,7 @@ const verticalMesh = new THREE.Mesh(verticalBar, crossMaterial);
 const horizontalMesh = new THREE.Mesh(horizontalBar, crossMaterial);
 horizontalMesh.position.y = 0.3;
 verticalMesh.add(horizontalMesh);
-verticalMesh.position.set(2.25, 0, -5);
+verticalMesh.position.set(1.5, 0, -5);
 scene.add(verticalMesh);
 
 const donutGeometry = new THREE.TorusGeometry(0.3, 0.1, 30, 30);
