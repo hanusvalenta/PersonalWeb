@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { AsciiEffect } from 'three/examples/jsm/effects/AsciiEffect.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-// Basic setup
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 5;
@@ -31,7 +30,6 @@ const dirLight = new THREE.DirectionalLight(0xffffff, 1);
 dirLight.position.set(5, 5, 5);
 scene.add(dirLight);
 
-// Create Heart Shape
 const heartShape = new THREE.Shape()
   .moveTo(5, 5)
   .bezierCurveTo(5, 5, 4, 0, 0, 0)
@@ -49,7 +47,6 @@ heartMesh.position.set(6, 1, -5);
 heartMesh.rotation.z = Math.PI / 4;
 scene.add(heartMesh);
 
-// Create Cross
 const crossMaterial = new THREE.MeshPhysicalMaterial({ color: 0xFFD700 });
 const verticalBar = new THREE.BoxGeometry(0.2, 1, 0.2);
 const horizontalBar = new THREE.BoxGeometry(0.6, 0.2, 0.2);
@@ -61,14 +58,12 @@ verticalMesh.add(horizontalMesh);
 verticalMesh.position.set(2.25, 0, -5);
 scene.add(verticalMesh);
 
-// Create Donut Shape
 const donutGeometry = new THREE.TorusGeometry(0.3, 0.1, 30, 30);
 const donutMaterial = new THREE.MeshPhysicalMaterial({ color: 0xFFA500 });
 const donutMesh = new THREE.Mesh(donutGeometry, donutMaterial);
 donutMesh.position.set(-6, -1, -5);
 scene.add(donutMesh);
 
-// Create Stars
 function createStar() {
   const geometry = new THREE.SphereGeometry(0.1, 24, 24);
   const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
@@ -84,7 +79,6 @@ for (let i = 0; i < 500; i++) {
   createStar();
 }
 
-// Load models
 const gltfLoader = new GLTFLoader();
 async function loadModels() {
   const teapot = await gltfLoader.loadAsync('Teapot.gltf');
