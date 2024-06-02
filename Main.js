@@ -59,6 +59,12 @@ verticalMesh.add(horizontalMesh);
 verticalMesh.position.set(1, 0, -5);
 scene.add(verticalMesh);
 
+const cubeGeometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+const cubeMaterial = new THREE.MeshPhysicalMaterial({ color: 0x00ff00 });
+const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cubeMesh.position.set(1, -10, -5);
+scene.add(cubeMesh);
+
 function createStar() {
   const geometry = new THREE.SphereGeometry(0.1, 24, 24);
   const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
@@ -101,6 +107,8 @@ function rotateObjects() {
   heartMesh.rotation.y += 0.01;
   verticalMesh.rotation.x += 0.01;
   verticalMesh.rotation.y += 0.01;
+  cubeMesh.rotation.x += 0.01;
+  cubeMesh.rotation.y += 0.01;
 }
 
 function animate() {
