@@ -58,12 +58,6 @@ verticalMesh.add(horizontalMesh);
 verticalMesh.position.set(1.5, 0, -5);
 scene.add(verticalMesh);
 
-const donutGeometry = new THREE.TorusGeometry(0.3, 0.1, 30, 30);
-const donutMaterial = new THREE.MeshPhysicalMaterial({ color: 0xFFA500 });
-const donutMesh = new THREE.Mesh(donutGeometry, donutMaterial);
-donutMesh.position.set(-6, -1, -5);
-scene.add(donutMesh);
-
 function createStar() {
   const geometry = new THREE.SphereGeometry(0.1, 24, 24);
   const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
@@ -106,8 +100,6 @@ function rotateObjects() {
   heartMesh.rotation.y += 0.01;
   verticalMesh.rotation.x += 0.01;
   verticalMesh.rotation.y += 0.01;
-  donutMesh.rotation.x += 0.01;
-  donutMesh.rotation.y += 0.01;
 }
 
 function animate() {
