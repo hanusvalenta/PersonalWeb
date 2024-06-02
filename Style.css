@@ -132,6 +132,25 @@ a {
   cursor: default;
 }
 
+#ScrollMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 40vw;
+  right: 2vw;
+  animation: fadeOut 16s forwards;
+}
+
+#ScrollMessage p {
+  margin: 5px;
+}
+
+#ScrollMessage img {
+  height: 2vw;
+  filter: invert();
+}
+
 Header {
   font-family: ThatThatNewPixel;
   background: var(--dark-bg);
@@ -186,6 +205,10 @@ TextBlock {
 @media (max-width: 768px) {
   .nameText {
     font-size: 8vw;
+  }
+
+  #ScrollMessage {
+    display: none;
   }
 
   Header {
