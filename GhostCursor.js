@@ -46,6 +46,7 @@ export function ghostCursor(options) {
       canvas.style.top = "0px";
       canvas.style.left = "0px";
       canvas.style.pointerEvents = "none";
+      canvas.style.zIndex = "9999";
   
       if (hasWrapperEl) {
         canvas.style.position = "absolute";
