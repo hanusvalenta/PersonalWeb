@@ -47,6 +47,17 @@ body {
   backdrop-filter: invert(0);
 }
 
+#SiteMap {
+  width: 5vw;
+  height: 1.2vw;
+  overflow-y: hidden;
+  transition: height 1s;
+}
+
+#SiteMap:hover {
+  height: 10vw;
+}
+
 .nameText {
   font-family: ThatThatNewPixel;
   font-weight: bolder;
