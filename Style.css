@@ -81,6 +81,12 @@ body {
   }
 }
 
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  93.75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 Header:hover + .circle {
   backdrop-filter: invert(1);
 }
