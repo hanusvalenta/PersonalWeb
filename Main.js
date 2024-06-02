@@ -43,7 +43,7 @@ const heartGeometry = new THREE.ShapeGeometry(heartShape);
 const heartMaterial = new THREE.MeshPhysicalMaterial({ color: 0xec0927 });
 const heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
 heartMesh.scale.set(0.05, 0.05, 0.05);
-heartMesh.position.set(-2.25, 8, -10);
+heartMesh.position.set(-4, 17, -20);
 heartMesh.rotation.z = Math.PI / 4;
 scene.add(heartMesh);
 
