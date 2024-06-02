@@ -5,6 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
 camera.position.z = 5;
 
 const canvas = document.getElementById("display-canvas");
@@ -43,7 +44,7 @@ const heartGeometry = new THREE.ShapeGeometry(heartShape);
 const heartMaterial = new THREE.MeshPhysicalMaterial({ color: 0xec0927 });
 const heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
 heartMesh.scale.set(0.05, 0.05, 0.05);
-heartMesh.position.set(-4, 17, -20);
+heartMesh.position.set(3, 17, -20);
 heartMesh.rotation.z = Math.PI / 4;
 scene.add(heartMesh);
 
@@ -55,7 +56,7 @@ const verticalMesh = new THREE.Mesh(verticalBar, crossMaterial);
 const horizontalMesh = new THREE.Mesh(horizontalBar, crossMaterial);
 horizontalMesh.position.y = 0.3;
 verticalMesh.add(horizontalMesh);
-verticalMesh.position.set(1.5, 0, -5);
+verticalMesh.position.set(1, 0, -5);
 scene.add(verticalMesh);
 
 function createStar() {
