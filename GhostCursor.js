@@ -36,7 +36,7 @@ export function ghostCursor(options) {
     function init() {
       if (prefersReducedMotion.matches) {
         console.log(
-          "User prefers reduced motion, so the ghost cursor effect is disabled."
+          "Cursor effect is disabled."
         );
         return false;
       }
